@@ -61,7 +61,7 @@ python 04-ml-capstone/src/run.py \
 ![Binary confusion matrix](assets/confusion_best_binary.png)
 
 ### Logistic Regression（Newton）表格结果（来自报告整理）
-- CSV：`results/logreg_results.csv`
+- CSV：[results/logreg_results.csv](results/logreg_results.csv)
 - 内容：蘑菇数据集（mushroom）与胎儿健康数据集（fetal_health），在不同学习率（0.1 / 0.5 / 1.0）与不同训练/验证划分（9:1 / 8:2 / 7:3）下的 Precision / Accuracy / Recall / F1。
 
 **小结（按 F1 最优）**
