@@ -3,3 +3,7 @@ reports/*/
 reports/summary.csv
 # Keep the placeholder
 !reports/.gitkeep
+
+# Python bytecode
+__pycache__/
+*.py[cod]
