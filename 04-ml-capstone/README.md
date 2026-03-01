@@ -1,125 +1,102 @@
-# 04-ml-capstone
+# 🎓 机器学习最终课设：多数据集分类模型对比与调参（.mat 可配置）
 
-Capstone project refactoring four course appendix scripts (binary logistic regression, multiclass OvO logistic regression, decision tree with CV tuning, and SVM with CV tuning) into a reproducible, configurable Python mini-project.
+## 📌 项目简介（中文）
+本项目整理并工程化了课程最终课设的核心代码，围绕 **多个真实数据集** 的分类任务，完成了：
+- **对数几率回归（Logistic Regression）**：基于 Hessian 的 Newton / 拟牛顿式更新（`pinv` 求逆）  
+- **决策树（Decision Tree）**：基于 5-fold 交叉验证的网格搜索调参  
+- **支持向量机（SVM, RBF）**：基于 StratifiedKFold 的参数搜索（`C`、`gamma`），并修复“训练集上评估”的数据泄漏问题（最终在 held-out test set 评估）
+- 输出统一的评估指标与可视化结果（混淆矩阵热力图、决策树结构图等）
 
-> **Note:** Dataset `.mat` files are **not** included. You must supply your own `.mat` file via `--mat-path`.
-
----
-
-## Directory layout
-
-```
-04-ml-capstone/
-├── README.md
-├── requirements.txt
-├── reports/          # auto-created at run time; stores metrics.json, summary.csv, plots
-├── src/
-│   ├── __init__.py
-│   ├── inspect_mat.py          # CLI: inspect .mat file keys and shapes
-│   ├── data.py                 # configurable .mat loader
-│   ├── metrics.py              # accuracy / precision / recall / F1 / confusion matrix
-│   ├── plots.py                # save confusion-matrix heatmap and decision-tree plot
-│   ├── logreg_newton_binary.py # binary logistic regression (Newton / Hessian update)
-│   ├── logreg_ovo_multiclass.py# multiclass OvO logistic regression (majority vote)
-│   ├── decision_tree_tuning.py # decision tree + 5-fold CV grid search
-│   ├── svm_tuning.py           # SVM + StratifiedKFold CV + held-out test evaluation
-│   └── run.py                  # unified CLI entrypoint
-└── tests/
-    └── test_smoke.py           # smoke tests (no .mat data required)
-```
+### 为什么数据集缺失也能运行？
+考虑到 `.mat` 数据文件可能无法随仓库一并提供，本项目采用“**方案A：数据加载可配置**”：
+- 运行时通过参数指定 `.mat` 路径、变量 key、标签列位置
+- 提供 `inspect_mat.py` 帮你快速查看 `.mat` 文件包含哪些 key、shape，从而确定参数怎么填
 
 ---
 
-## Installation
+## 🗂️ 项目结构
+- `src/inspect_mat.py`：查看 `.mat` 文件 keys / shape，建议默认 `--mat-key` 与 `--label-col`
+- `src/data.py`：通用 `.mat` 读取与特征/标签切分（label 支持 `first|last|index`）
+- `src/metrics.py`：统一指标（accuracy、precision/recall/F1 的 macro/micro/weighted；二分类额外提供“第一类指标”口径）
+- `src/plots.py`：保存混淆矩阵热力图；保存决策树可视化（使用非交互后端，适合无 GUI 环境）
+- `src/logreg_newton_binary.py`：二分类 Logistic Regression（Newton/拟牛顿更新）
+- `src/logreg_ovo_multiclass.py`：多分类 Logistic Regression（OvO + 众数投票）
+- `src/decision_tree_tuning.py`：决策树 CV 调参 + 测试集评估
+- `src/svm_tuning.py`：SVM CV 调参 + **测试集评估**（避免数据泄漏）
+- `src/run.py`：统一 CLI 入口（选择模型/是否调参/输出 reports）
+- `tests/test_smoke.py`：合成数据 smoke tests（不依赖 `.mat`）
 
+---
+
+## 🔍 第一步：检查你的 .mat 文件（推荐）
 ```bash
-# from the repo root
-pip install -r 04-ml-capstone/requirements.txt
+python 04-ml-capstone/src/inspect_mat.py --mat-path your_dataset.mat
 ```
 
 ---
 
-## Inspecting a `.mat` file
+## 🚀 运行示例
+> 说明：以下命令中的 `--mat-key`、`--label-col` 需要根据你的 `.mat` 内容调整。  
+> 如果不确定，请先运行 `inspect_mat.py`。
 
-Before running experiments you can discover which variable keys are stored in a `.mat` file and what shapes they have:
-
+### 1) 运行 SVM（可选调参）并输出报告
 ```bash
-python 04-ml-capstone/src/inspect_mat.py --mat-path /path/to/dataset.mat
-```
-
-Sample output:
-```
-Keys in /path/to/dataset.mat
-  '__header__'        : (metadata, skipped)
-  '__version__'       : (metadata, skipped)
-  '__globals__'       : (metadata, skipped)
-  'data'              : shape=(150, 5)  dtype=float64
-
-Suggested defaults:
-  --mat-key  data
-  Array has 5 columns. Label is likely the first or last column.
-  --label-col last   (column index 4)
-  --label-col first  (column index 0)
-```
-
----
-
-## Running experiments
-
-### Unified CLI (`run.py`)
-
-```
 python 04-ml-capstone/src/run.py \
-    --mat-path /path/to/dataset.mat \
-    [--mat-key KEY]          # defaults to first non-metadata key
-    [--label-col {first,last,INT}]  # default: last
-    [--model {logreg_binary,logreg_ovo,decision_tree,svm}]
-    [--tune]                 # enable CV hyper-parameter search
-    [--test-size 0.2]        # train/test split ratio
-    [--random-state 42]
-    [--run-id RUN_ID]        # sub-folder name under reports/; auto-generated if omitted
-    [--repeats 10]           # (logreg_binary) number of random splits
-    [--max-iter 300]         # (logreg_binary / logreg_ovo)
+  --mat-path your_dataset.mat \
+  --mat-key data \
+  --label-col last \
+  --model svm \
+  --tune \
+  --test-size 0.2 \
+  --random-state 42
 ```
 
-### Examples
-
+### 2) 运行决策树并调参
 ```bash
-# inspect first
-python 04-ml-capstone/src/inspect_mat.py --mat-path dataset.mat
+python 04-ml-capstone/src/run.py \
+  --mat-path your_dataset.mat \
+  --mat-key data \
+  --label-col last \
+  --model decision_tree \
+  --tune \
+  --test-size 0.2 \
+  --random-state 42
+```
 
-# binary logistic regression with Newton updates, 10 random splits
-python 04-ml-capstone/src/run.py --mat-path dataset.mat --mat-key X \
-    --label-col last --model logreg_binary --repeats 10
-
-# multiclass OvO logistic regression
-python 04-ml-capstone/src/run.py --mat-path dataset.mat \
-    --model logreg_ovo --tune
-
-# decision tree with 5-fold CV grid search
-python 04-ml-capstone/src/run.py --mat-path dataset.mat \
-    --model decision_tree --tune
-
-# SVM with StratifiedKFold CV (fixes evaluation leakage)
-python 04-ml-capstone/src/run.py --mat-path dataset.mat \
-    --model svm --tune --test-size 0.2
+### 3) 运行二分类 Logistic Regression（Newton）
+```bash
+python 04-ml-capstone/src/run.py \
+  --mat-path your_dataset.mat \
+  --mat-key data \
+  --label-col first \
+  --model logreg_newton_binary \
+  --test-size 0.3 \
+  --random-state 42
 ```
 
 ---
 
-## Outputs
+## 📈 输出结果（reports）
+每次运行都会在 `reports/<run-id>/` 生成：
+- `metrics.json`：指标与最佳参数（如有调参）
+- `confusion_matrix.png`：混淆矩阵热力图
+- `tree.png`：决策树结构图（仅 decision tree）
+并在 `reports/summary.csv` 追加一行汇总。
 
-Every run writes its results to `04-ml-capstone/reports/<run-id>/`:
-
-| File | Contents |
-|------|----------|
-| `metrics.json` | accuracy, precision, recall, F1 (macro/micro/weighted), best params |
-| `summary.csv` | one row per run appended for easy comparison |
-| `confusion_matrix.png` | heatmap of the test-set confusion matrix |
-| `tree.png` | decision-tree structure (decision_tree model only) |
+> 注：`reports/` 已加入 `.gitignore`，默认不会提交运行产物（避免仓库膨胀）。
 
 ---
 
-## Reproducibility
+## 🧰 环境依赖
+建议 Python 3.x，主要依赖：
+- numpy, scipy
+- scikit-learn
+- matplotlib, seaborn
 
-Pass `--random-state INT` to fix all random seeds. Default is `42`.
+可直接使用仓库根目录的 `requirements.txt` 安装（如其中已包含上述依赖）。
+
+---
+
+# English Summary
+This folder is a cleaned-up, reproducible version of my ML course capstone project.  
+It provides a unified CLI to run and tune multiple classifiers (LogReg with Newton-style updates, Decision Tree with CV grid search, SVM with StratifiedKFold tuning) on `.mat` datasets **without bundling data files**. Use `inspect_mat.py` to discover keys/shapes and configure `--mat-key` / `--label-col`. Each run exports metrics and plots under `reports/<run-id>/`.
