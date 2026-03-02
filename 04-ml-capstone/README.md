@@ -45,6 +45,20 @@ python 04-ml-capstone/src/run.py \
 ---
 
 ## 📊 结果展示（Portfolio Results）
+### 如何复现（Reproduce）
+> 本仓库不包含 `.mat` 数据集文件；请将 `--mat-path` / `--mat-key` / `--label-col` 按你的数据实际情况替换。
+
+Logistic Regression（Newton, binary）示例：
+
+```bash
+python 04-ml-capstone/src/run.py \
+  --mat-path your_dataset.mat \
+  --mat-key data \
+  --label-col last \
+  --model logreg_newton_binary \
+  --test-size 0.2 \
+  --random-state 42
+```
 ### 跨数据集、跨模型整体对比
 > 这张图用于快速展示：不同模型在 Data1 / Data2 / Data3 上的整体差异（作品集主图）。
 
