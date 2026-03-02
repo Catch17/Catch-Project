@@ -59,6 +59,19 @@ python 04-ml-capstone/src/run.py \
   --test-size 0.2 \
   --random-state 42
 ```
+
+SVM（RBF）调参 + 测试集评估示例：
+
+```bash
+python 04-ml-capstone/src/run.py \
+  --mat-path your_dataset.mat \
+  --mat-key data \
+  --label-col last \
+  --model svm \
+  --tune \
+  --test-size 0.2 \
+  --random-state 42
+```
 ### 跨数据集、跨模型整体对比
 > 这张图用于快速展示：不同模型在 Data1 / Data2 / Data3 上的整体差异（作品集主图）。
 
