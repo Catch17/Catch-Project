@@ -37,6 +37,9 @@
 ```bash
 pip install -r requirements.txt
 
+# Run tests
+pytest -q
+
 # LR
 python src/train.py --data data/phishing.csv --label-col Result --model lr --outdir outputs
 
