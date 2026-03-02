@@ -34,39 +34,41 @@ def build_model(model_name: str):
     raise ValueError("model must be one of: lr, svm")
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data", required=True, help="Path to CSV file")
-    parser.add_argument("--label-col", default="Result", help="Label column name (default: Result)")
-    parser.add_argument("--model", default="lr", choices=["lr", "svm"], help="Model type")
-    parser.add_argument("--outdir", default="outputs", help="Output directory")
-    parser.add_argument("--test-size", type=float, default=0.2)
-    parser.add_argument("--seed", type=int, default=42)
-    args = parser.parse_args()
+def map_result_to_binary(y_raw: pd.Series) -> pd.Series:
+    """
+    Map Result labels to binary:
+    - If labels are in {-1, 1}: -1 -> 0, 1 -> 1
+    - Otherwise: treat 0 as 0, any non-zero as 1
+    """
+    unique_vals = set(pd.unique(y_raw))
+    if unique_vals.issubset({-1, 1}):
+        return (y_raw != -1).astype(int)
 
-    data_path = Path(args.data)
-    outdir = Path(args.outdir)
+    y = pd.Series(y_raw).astype(int)
+    return (y != 0).astype(int)
+
+
+def train_and_evaluate(
+    *,
+    data_path: Path,
+    label_col: str,
+    model: str,
+    outdir: Path,
+    test_size: float = 0.2,
+    seed: int = 42,
+) -> dict:
+    outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(data_path)
 
-    if args.label_col not in df.columns:
-        raise ValueError(
-            f"Label column '{args.label_col}' not found. Available columns: {df.columns.tolist()}"
-        )
+    if label_col not in df.columns:
+        raise ValueError(f"Label column '{label_col}' not found. Available columns: {df.columns.tolist()}")
 
-    y_raw = df[args.label_col]
-    X = df.drop(columns=[args.label_col])
+    y_raw = df[label_col]
+    X = df.drop(columns=[label_col])
 
-    # Map labels to {0,1}
-    # If dataset uses -1/1: treat -1 as benign(0), others as malicious(1)
-    # If already 0/1, keep as is
-    unique_vals = set(pd.unique(y_raw))
-    if unique_vals.issubset({-1, 1}):
-        y = (y_raw != -1).astype(int)
-    else:
-        y = pd.Series(y_raw).astype(int)
-        y = (y != 0).astype(int)
+    y = map_result_to_binary(y_raw)
 
     # numeric/categorical split
     numeric_cols = X.select_dtypes(include=[np.number]).columns.tolist()
@@ -92,16 +94,14 @@ def main():
         ]
     )
 
-    clf = build_model(args.model)
-
+    clf = build_model(model)
     pipe = Pipeline(steps=[("pre", pre), ("clf", clf)])
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=args.test_size, random_state=args.seed, stratify=y
+        X, y, test_size=test_size, random_state=seed, stratify=y
     )
 
     pipe.fit(X_train, y_train)
-
     y_pred = pipe.predict(X_test)
 
     # probabilities for ROC-AUC
@@ -111,7 +111,7 @@ def main():
         y_score = pipe.decision_function(X_test)
 
     metrics = {
-        "model": args.model,
+        "model": model,
         "n_rows": int(df.shape[0]),
         "n_features": int(X.shape[1]),
         "accuracy": float(accuracy_score(y_test, y_pred)),
@@ -139,9 +139,31 @@ def main():
     plt.savefig(outdir / "roc_curve.png", dpi=200)
     plt.close()
 
+    return metrics
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", required=True, help="Path to CSV file")
+    parser.add_argument("--label-col", default="Result", help="Label column name (default: Result)")
+    parser.add_argument("--model", default="lr", choices=["lr", "svm"], help="Model type")
+    parser.add_argument("--outdir", default="outputs", help="Output directory")
+    parser.add_argument("--test-size", type=float, default=0.2)
+    parser.add_argument("--seed", type=int, default=42)
+    args = parser.parse_args()
+
+    metrics = train_and_evaluate(
+        data_path=Path(args.data),
+        label_col=args.label_col,
+        model=args.model,
+        outdir=Path(args.outdir),
+        test_size=args.test_size,
+        seed=args.seed,
+    )
+
+    # keep original stdout behavior
     print(json.dumps({k: v for k, v in metrics.items() if k != "classification_report"}, indent=2))
     print(metrics["classification_report"])
-
     return 0
 
 
