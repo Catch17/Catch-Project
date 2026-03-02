@@ -37,11 +37,12 @@ def build_model(model_name: str):
 def map_result_to_binary(y_raw: pd.Series) -> pd.Series:
     """
     Map Result labels to binary:
-    - If labels are in {-1, 1}: -1 -> 0, 1 -> 1
-    - Otherwise: treat 0 as 0, any non-zero as 1
+    - If -1 appears: treat -1 as benign(0), others as malicious/suspicious(1)
+    - Else: treat 0 as benign(0), others as 1
     """
     unique_vals = set(pd.unique(y_raw))
-    if unique_vals.issubset({-1, 1}):
+
+    if -1 in unique_vals:
         return (y_raw != -1).astype(int)
 
     y = pd.Series(y_raw).astype(int)
