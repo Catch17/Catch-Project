@@ -19,6 +19,20 @@
   - SVM-RBF（class_weight=balanced）
 - 指标：Accuracy、Precision、Recall、F1、ROC-AUC；并输出 Confusion Matrix、ROC Curve
 
+## Results（SVM-RBF）
+在本数据集上，SVM-RBF 表现最佳（test set）：
+- Accuracy: 0.941
+- Precision: 0.988
+- Recall: 0.948
+- F1: 0.967
+- ROC-AUC: 0.965
+
+混淆矩阵与 ROC 曲线如下（文件位于 `outputs_svm/`）：
+
+![Confusion Matrix](outputs_svm/confusion_matrix.png)
+
+![ROC Curve](outputs_svm/roc_curve.png)
+
 ## 如何运行
 ```bash
 pip install -r requirements.txt
@@ -27,10 +41,13 @@ pip install -r requirements.txt
 python src/train.py --data data/phishing.csv --label-col Result --model lr --outdir outputs
 
 # SVM
-python src/train.py --data data/phishing.csv --label-col Result --model svm --outdir outputs
+python src/train.py --data data/phishing.csv --label-col Result --model svm --outdir outputs_svm
 ```
 
 ## 输出
 - `outputs/metrics.json`
 - `outputs/confusion_matrix.png`
 - `outputs/roc_curve.png`
+- `outputs_svm/metrics.json`
+- `outputs_svm/confusion_matrix.png`
+- `outputs_svm/roc_curve.png`
