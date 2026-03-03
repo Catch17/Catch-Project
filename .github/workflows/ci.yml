@@ -23,5 +23,7 @@ jobs:
 
       - name: Run tests
         working-directory: 06-llm-text-classification
+        env:
+          PYTHONPATH: ${{ github.workspace }}/06-llm-text-classification
         run: |
-          pytest -q
+          python -m pytest -q
