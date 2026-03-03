@@ -1,0 +1,1 @@
+[2026-03-03T10:38:31.422072] HTTP 402: {"error":{"message":"Insufficient Balance","type":"unknown_error","param":null,"code":"invalid_request_error"}}

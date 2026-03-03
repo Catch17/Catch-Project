@@ -1,0 +1,10 @@
+{
+  "mode": "zero",
+  "total_samples": 50,
+  "valid_predictions": 50,
+  "unknown_predictions": 0,
+  "accuracy": 0.94,
+  "precision": 1.0,
+  "recall": 0.85,
+  "f1": 0.9189
+}

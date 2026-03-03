@@ -1,0 +1,51 @@
+text,label,prediction
+"Love it, great purchase!",positive,positive
+"Awful quality, very disappointed.",negative,negative
+Fast shipping and nice packaging.,positive,positive
+Broke after two days.,negative,negative
+Best thing I bought this year.,positive,positive
+"Terrible, do not buy.",negative,negative
+Super comfortable and stylish.,positive,positive
+Waste of money.,negative,negative
+Excellent customer service!,positive,positive
+"Arrived damaged, very upset.",negative,negative
+Highly recommend to everyone.,positive,positive
+"Cheap material, falls apart easily.",negative,negative
+"Perfect fit, love the color.",positive,positive
+Stopped working after a week.,negative,negative
+Amazing value for the price.,positive,positive
+"Horrible experience, never again.",negative,negative
+My kids love it!,positive,positive
+Completely useless product.,negative,negative
+"Great gift idea, well made.",positive,positive
+Looks nothing like the picture.,negative,negative
+Smooth and easy to use.,positive,positive
+Customer support was unhelpful.,negative,negative
+"Beautiful design, very happy.",positive,positive
+Smells bad and looks cheap.,negative,negative
+"Works perfectly, no complaints.",positive,positive
+"Total scam, want a refund.",negative,negative
+Sturdy and well built.,positive,positive
+"Missing parts, very frustrating.",negative,negative
+Exceeded all my expectations.,positive,positive
+"Poor packaging, arrived broken.",negative,negative
+So soft and cozy!,positive,positive
+Worst purchase ever made.,negative,negative
+"Easy to set up, love it.",positive,positive
+Falls apart after first use.,negative,negative
+"Five stars, absolutely worth it.",positive,positive
+Not worth a single penny.,negative,negative
+Very practical and useful.,positive,positive
+"Terrible smell, had to return.",negative,negative
+"Bought two, one for a friend.",positive,positive
+Instructions make no sense.,negative,negative
+Looks even better in person.,positive,positive
+Color faded after one wash.,negative,negative
+Great for everyday use.,positive,positive
+Zipper broke immediately.,negative,negative
+"Fantastic quality, will buy again.",positive,positive
+Very flimsy and lightweight.,negative,negative
+"Quick delivery, great seller.",positive,positive
+"Wrong size, wrong color.",negative,negative
+Happy with my purchase!,positive,positive
+Regret buying this.,negative,negative

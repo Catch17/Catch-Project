@@ -1,0 +1,5 @@
+text,label,prediction
+"Love it, great purchase!",positive,positive
+"Awful quality, very disappointed.",negative,negative
+Fast shipping and nice packaging.,positive,positive
+Broke after two days.,negative,negative

@@ -1,0 +1,51 @@
+text,label,prediction
+Not bad at all.,positive,positive
+"Not great, honestly.",negative,negative
+I expected more.,negative,negative
+"It works, I guess.",negative,negative
+"It's okay, nothing special.",negative,negative
+I can't say I hate it.,positive,positive
+I wouldn't say I love it.,negative,negative
+Pretty decent for the price.,positive,positive
+Could be worse.,negative,negative
+Could be better.,negative,negative
+"Looks nice, but feels cheap.",negative,negative
+"Nice design, terrible build.",negative,negative
+"Good idea, poor execution.",negative,negative
+"Great on day one, awful after.",negative,negative
+Works when it wants to.,negative,negative
+"Sure, it's 'fine'.",negative,negative
+"Does the job, mostly.",positive,unknown
+"It’s fine, but I won’t buy again.",negative,negative
+"I like it, though it has flaws.",positive,positive
+"I want to like it, but I can't.",negative,negative
+Better than I thought.,positive,positive
+Worse than I thought.,negative,negative
+Surprisingly good.,positive,positive
+Surprisingly disappointing.,negative,negative
+"Feels premium, not perfect.",positive,positive
+"Cheap, but acceptable.",positive,positive
+Cheap and unacceptable.,negative,negative
+Customer service fixed it quickly.,positive,positive
+Customer service never replied.,negative,negative
+The replacement was flawless.,positive,positive
+The replacement was also broken.,negative,negative
+I was wrong to doubt it.,positive,positive
+I was right to doubt it.,negative,negative
+It grew on me after a week.,positive,positive
+It got worse after a week.,negative,negative
+"I'd recommend it, with caution.",positive,negative
+I can't recommend this.,negative,negative
+Works as advertised.,positive,positive
+Not as described.,negative,negative
+"Setup was easy, results were meh.",negative,negative
+"Setup was annoying, but worth it.",positive,positive
+"The sound is good, the mic is not.",negative,negative
+"The screen is bright, the battery isn't.",negative,negative
+"Comfortable enough, but overpriced.",negative,negative
+"Overpriced, yet I still like it.",positive,positive
+"I love the look; the function, not so much.",negative,negative
+"I hate the color, but it performs well.",positive,negative
+"Not perfect, still happy.",positive,positive
+"Not terrible, still returning it.",negative,negative
+I'll keep it.,positive,positive

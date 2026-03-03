@@ -1,0 +1,51 @@
+text,label
+"Not bad at all.",positive
+"Not great, honestly.",negative
+"I expected more.",negative
+"It works, I guess.",negative
+"It's okay, nothing special.",negative
+"I can't say I hate it.",positive
+"I wouldn't say I love it.",negative
+"Pretty decent for the price.",positive
+"Could be worse.",negative
+"Could be better.",negative
+"Looks nice, but feels cheap.",negative
+"Nice design, terrible build.",negative
+"Good idea, poor execution.",negative
+"Great on day one, awful after.",negative
+"Works when it wants to.",negative
+"Sure, it's 'fine'.",negative
+"Does the job, mostly.",positive
+"It’s fine, but I won’t buy again.",negative
+"I like it, though it has flaws.",positive
+"I want to like it, but I can't.",negative
+"Better than I thought.",positive
+"Worse than I thought.",negative
+"Surprisingly good.",positive
+"Surprisingly disappointing.",negative
+"Feels premium, not perfect.",positive
+"Cheap, but acceptable.",positive
+"Cheap and unacceptable.",negative
+"Customer service fixed it quickly.",positive
+"Customer service never replied.",negative
+"The replacement was flawless.",positive
+"The replacement was also broken.",negative
+"I was wrong to doubt it.",positive
+"I was right to doubt it.",negative
+"It grew on me after a week.",positive
+"It got worse after a week.",negative
+"I'd recommend it, with caution.",positive
+"I can't recommend this.",negative
+"Works as advertised.",positive
+"Not as described.",negative
+"Setup was easy, results were meh.",negative
+"Setup was annoying, but worth it.",positive
+"The sound is good, the mic is not.",negative
+"The screen is bright, the battery isn't.",negative
+"Comfortable enough, but overpriced.",negative
+"Overpriced, yet I still like it.",positive
+"I love the look; the function, not so much.",negative
+"I hate the color, but it performs well.",positive
+"Not perfect, still happy.",positive
+"Not terrible, still returning it.",negative
+"I'll keep it.",positive
