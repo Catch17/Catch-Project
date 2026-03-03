@@ -3,7 +3,8 @@ scikit-learn
 matplotlib
 seaborn
 pandas
-requirements
+requests
 pytest
+
 
 
